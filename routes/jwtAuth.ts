@@ -1,6 +1,7 @@
 import {Router} from "express";
 import { client }  from "../server" 
 import  bcrypt from "bcrypt";
+import jwtGenerator from "../utils/jwtGenerator";
 
 //registering 
 
@@ -25,10 +26,15 @@ router.post("/register", async (req, res) => {
     const bcryptPassword = await bcrypt.hash(password, salt)
 
     //4. enter the user inside our database 
-    const newUser = await client.query("INSERT into users (username, email, password) VALUES ($1, $2, $3) RETURNING *", [username, email, bcryptPassword])
-    res.json(newUser.rows[0])
+    const newUser = await client.query("INSERT into users (username, email, password) VALUES ($1, $2, $3) RETURNING *", [username, email, bcryptPassword]);
     
     //5. generating our jwt token
+
+    const token = jwtGenerator(newUser.rows[0].user_id)
+
+    res.json({token})
+
+
   } catch (error) {
     console.error(error);
     res.status(500).send("Server error");
