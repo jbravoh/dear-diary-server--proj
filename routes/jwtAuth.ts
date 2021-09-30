@@ -2,12 +2,13 @@ import { Router } from "express";
 import { client } from "../server";
 import bcrypt from "bcrypt";
 import jwtGenerator from "../utils/jwtGenerator";
+import validInfo from "../middleware/validInfo"
 
 //REGISTER
 
-const router = Router();
+const router = Router(); 
 
-router.post("/register", async (req, res) => {
+router.post("/register", validInfo, async (req, res) => {
   try {
     //1. destructure the req.body(name, email. password)
 
@@ -21,7 +22,7 @@ router.post("/register", async (req, res) => {
     if (user.rows.length !== 0) {
       return res.status(401).send("User already exists");
     }
-
+ 
     //3. Bcrypt the user password
 
     const saltRound = 10;
@@ -47,7 +48,7 @@ router.post("/register", async (req, res) => {
 
 // LOGIN
 
-router.post("/login", async (req, res) => {
+router.post("/login", validInfo, async (req, res) => {
   try {
 
     //1. destructure the req.body
@@ -80,4 +81,4 @@ router.post("/login", async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;
