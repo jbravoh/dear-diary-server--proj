@@ -2,6 +2,8 @@ import { Client } from "pg";
 import { config } from "dotenv";
 import express from "express";
 import cors from "cors";
+import authRouter from "./routes/jwtAuth"
+import dashboardRouter from "./routes/dashboard"
 
 config(); //Read .env file lines as though they were env vars.
 
@@ -23,14 +25,23 @@ const app = express();
 app.use(express.json()); //add body parser to each following route handler
 app.use(cors()) //add CORS support to each following route handler
 
-export const client = new Client(dbConfig);
+export const client = new Client(dbConfig); 
 client.connect();
 
-// ROUTES 
+// ===> ROUTES <====
+
+// AUTHENTICATION 
 
 // Register and login routes
 
-app.use("/authentication", require("./routes/jwtAuth"))
+app.use("/authentication", authRouter )
+
+// Dashboard
+
+app.use("/dashboard", dashboardRouter)
+
+ 
+
 
 app.get("/", async (req, res) => {
   const dbres = await client.query('select * from categories');
