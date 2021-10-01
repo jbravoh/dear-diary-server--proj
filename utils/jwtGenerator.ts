@@ -1,5 +1,4 @@
 import jwt from "jsonwebtoken";
-// import { config } from "dotenv";
 import userI from "../userInterface";
 
 export default function jwtGenerator(user_id: userI[]) {
@@ -9,4 +8,3 @@ export default function jwtGenerator(user_id: userI[]) {
 
   return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1hr" });
 }
-
