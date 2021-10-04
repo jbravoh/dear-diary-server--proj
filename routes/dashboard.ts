@@ -54,6 +54,18 @@ router.put("/posts/:id", authorisation, async (req: RequestWithUser, res) => {
   }
 })
 
+// delete a post 
+
+router.delete("/posts/:id", authorisation, async (req: RequestWithUser, res) => {
+  try {
+    const { id } = req.params
+    const deletePost = await client.query("DELETE FROM posts WHERE post_id = $1 AND user_id = $2 RETURNING *", [id, req.user])
+    res.json("Post was deleted")
+  } catch (error) {
+    console.error(error)
+  }
+})
+
 
 
 
