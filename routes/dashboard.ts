@@ -37,6 +37,25 @@ router.post("/posts", authorisation, async (req: RequestWithUser, res) => {
   }
 });
 
+router.put("/posts/:id", authorisation, async (req: RequestWithUser, res) => {
+  try {
+    const { id } = req.params
+    const { title, content } = req.body
+    const updatePost = await client.query("UPDATE posts SET title = $1, content = $2  WHERE post_id = $3 AND user_id = $4", [title, content, id, req.user]);
+
+    // if (updatePost.rows.length === 0) {
+    //   return res.json("This post is not yours")
+    // }
+
+    res.json("Post was updated")
+  } catch (error) {
+    console.error(error)
+  
+  }
+})
+
+
+
 
 
 
