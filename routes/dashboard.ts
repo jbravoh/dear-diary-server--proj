@@ -21,18 +21,4 @@ router.get("/", authorisation, async (req: RequestWithUser, res) => {
   }
 });
 
-// router.post("/", authorisation, async (req: RequestWithUser, res) => {
-//   try {
-//     const { title, content } = req.body;
-//     const newPost = await client.query(
-//       "INSERT INTO posts (title, content, user_id) VALUES($1, $2, $3) RETURNING *",
-//       [title, content, req.user]
-//     );
-//     res.status(201).json(newPost.rows[0]);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500);
-//   }
-// });
-
 export default router;
