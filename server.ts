@@ -30,20 +30,22 @@ client.connect();
 
 // ===> ROUTES <====
 
-// AUTHENTICATION
-
-// Register and login routes
-
-app.use("/authentication", authRouter);
-
-// Dashboard
-
-app.use("/dashboard", dashboardRouter);
 
 app.get("/", async (req, res) => {
   const dbres = await client.query("select * from categories");
   res.json(dbres.rows);
 });
+
+// AUTHENTICATION
+
+// Register and login routes
+
+app.use("/auth", authRouter);
+
+// Dashboard
+
+app.use("/dashboard", dashboardRouter);
+
 
 //Start the server on the given port
 const port = process.env.PORT;

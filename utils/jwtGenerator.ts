@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+
 import userI from "../userInterface";
 
 export default function jwtGenerator(user_id: userI[]) {
