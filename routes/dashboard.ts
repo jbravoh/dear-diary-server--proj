@@ -5,21 +5,24 @@ import { RequestWithUser } from "../middleware/authorisation";
 
 const router = Router();
 
+// get all posts
+
 router.get("/", authorisation, async (req: RequestWithUser, res) => {
   try {
     // req.user has the payload
 
     const user = await client.query(
-      "SELECT username FROM users WHERE user_id = $1",
+      "SELECT users.user_id, users.username, posts.post_id, posts.title, posts.content FROM users LEFT JOIN posts on users.user_id = posts.user_id WHERE users.user_id = $1",
       [req.user]
     );
 
-    res.json(user.rows[0]);
-  } catch (error) {
+    res.json(user.rows);
+  } catch (error) { 
     console.error(error);
-    res.status(500).json("Server error");
+    res.status(500).json("Server error"); 
   }
 });
 
 
+ 
 export default router;
