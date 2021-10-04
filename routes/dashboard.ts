@@ -23,6 +23,22 @@ router.get("/", authorisation, async (req: RequestWithUser, res) => {
   }
 });
 
+// create a posts
+
+router.post("/posts", authorisation, async (req: RequestWithUser, res) => {
+  try {
+    console.log(req.body);
+    const { title, content } = req.body;
+    const newPost = await client.query("INSERT INTO posts (user_id, title, content) VALUES ($1, $2, $3) RETURNING *", [req.user, title, content])
+    res.json(newPost.rows[0])
+  } catch (error) {
+    console.error(error)
+    
+  }
+});
+
+
+
 
  
 export default router;
