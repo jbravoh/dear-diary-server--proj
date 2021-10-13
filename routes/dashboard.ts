@@ -10,9 +10,6 @@ const router = Router();
 router.get("/", authorisation, async (req: RequestWithUser, res) => {
   try {
     // req.user has the payload
-
-
-
     const user = await client.query(
       "SELECT users.user_id, users.username, posts.post_id, posts.title, posts.content, posts.created FROM users LEFT JOIN posts ON users.user_id = posts.user_id WHERE users.user_id = $1 ORDER BY posts.created DESC",
       [req.user]
